@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # First DevOps Project – Node.js with Docker & Docker Compose
 
 Bu repo, **DevOps öğrenme sürecimde oluşturduğum ilk mini projedir**.
