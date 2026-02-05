@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 
 const app = express();
 app.use(express.json());
@@ -6,9 +7,15 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const ENV = process.env.NODE_ENV || "development";
-let todos = [
-  { id: 1, title: "İlk todo", completed: false }
-];
+
+const DATA_FILE = "todos.json";
+
+let todos = [];
+
+if (fs.existsSync(DATA_FILE)) {
+	const data = fs.readFileSync(DATA_FILE);
+	todos = JSON.parse(data);
+}
 
 app.get("/", (req, res) => {
   res.send(`Hello DevOps from ${ENV} environment`);
@@ -30,6 +37,7 @@ app.post("/todos", (req, res) => {
   };
 
   todos.push(newTodo);
+  fs.writeFileSync(DATA_FILE, JSON.stringify(todos));
 
   res.status(201).json(newTodo);
 });
