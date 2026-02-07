@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const path =require("path");
 
 const app = express();
 app.use(express.json());
@@ -8,7 +9,13 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const ENV = process.env.NODE_ENV || "development";
 
-const DATA_FILE = "todos.json";
+const dataDir= path.join(__dirname, "data");
+
+if(!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir);
+}
+
+const DATA_FILE = path.join(dataDir, "todos.json");
 
 let todos = [];
 
@@ -29,6 +36,7 @@ app.get("/health", (req, res) => {
 app.get("/todos" , (req, res) => {
 	res.json(todos);
 });
+
 app.post("/todos", (req, res) => {
   const newTodo = {
     id: todos.length + 1,
