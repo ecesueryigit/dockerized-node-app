@@ -17,6 +17,6 @@ services:
       - ./data:/app/data
 
     env_file:
-    - ./app/.env 
+      - ./app/.env 
 
     
