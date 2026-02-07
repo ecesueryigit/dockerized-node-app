@@ -1,22 +1,21 @@
 version: "3.9"
 
 services:
+  node-app:
+    container_name: devops-node-app-prod
 
-   node-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
 
-	   container_name: devops-node-app-prod
+    ports:
+      - "3000:3000"
 
-		 build:
-		   context: ./app
-			 dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
 
-		 ports:
-		   - "3000:3000"
+    env_file:
+      - ./app/.env
 
-		 volumes:
-		   - ./data:/app/data
-
-		 env_file: 
-		   - ./app/.env
     
 	
