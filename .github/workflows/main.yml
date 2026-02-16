@@ -30,7 +30,7 @@ jobs:
            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
        - name: Build Docker image
-         run: docker build -t ecesueryigit/dockerized-node-app:${{ github.sha }}
+         run: docker build -t ecesueryigit/dockerized-node-app:${{ github.sha }} .
 
        - name: Push Docker image
          run: docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
