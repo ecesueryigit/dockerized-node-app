@@ -35,14 +35,14 @@ jobs:
 
        - name: Extract version
          id: vars
-         run:  echo "VERSION=${GITHUB_REF#REFS/TAGS/v}" >> $GITHUB_OUTPUT
+         run:  echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
        
 
        - name: Build Docker image
          run: |
            docker build \
              -t ecesueryigit/dockerized-node-app:latest \
-             -t ecesueryigit/dockerized-node-app:${{ github.sha }} ./app
+             -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
              -t ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }} \
              ./app
 
