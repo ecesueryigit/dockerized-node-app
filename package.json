@@ -1,0 +1,16 @@
+{
+  "name": "dockerized-node-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js app with Docker and CI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2"
+  }
+}
