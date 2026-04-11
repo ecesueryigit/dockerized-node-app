@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-  res.json({ status: "OK", environment: ENV });
+  res.json({ status: "ok", environment: ENV });
 });
 
 
