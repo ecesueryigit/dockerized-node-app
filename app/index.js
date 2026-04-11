@@ -50,5 +50,5 @@ app.post("/todos", (req, res) => {
   res.status(201).json(newTodo);
 });
 
+module.exports = app;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT} in ${ENV} mode`));
