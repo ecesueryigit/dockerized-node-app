@@ -54,11 +54,12 @@ app.post("/todos", (req, res) => {
     fs.writeFileSync(DATA_FILE, JSON.stringify(todos));
 
     res.status(201).json(newTodo);
-    
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   };
 
-module.exports = app;
 });
+
+module.exports = app;
