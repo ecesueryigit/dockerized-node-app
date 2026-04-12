@@ -38,6 +38,10 @@ app.get("/todos" , (req, res) => {
 });
 
 app.post("/todos", (req, res) => {
+
+  if (!req.body.title) {
+    return res.status(400).json({ error: "title is required" });
+  }
   const newTodo = {
     id: todos.length + 1,
     title: req.body.title,

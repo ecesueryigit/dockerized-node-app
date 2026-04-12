@@ -16,4 +16,22 @@ describe("API Tests", () => {
     const res = await request(app).get("/todos");
     expect(Array.isArray(res.body)).toBe(true);
   });
+
+  it("POST /todos should create a new todo", async () => {
+    const res = await request(app)
+      .post("/todos")
+      .send({ title: "learn testing" });
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toHaveProperty("id");
+    expect(res.body.title).toBe("learn testing");
+    expect(res.body.completed).toBe(false);
+  });
+
+  it("POST /todos should return 400 if title is missing", async () => {
+  const res = await request(app).post("/todos").send({});
+
+  expect(res.statusCode).toBe(400);
+  expect(res.body.error).toBe("title is required");
+  });
 });
