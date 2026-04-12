@@ -26,6 +26,10 @@ describe("API Tests", () => {
     expect(res.body).toHaveProperty("id");
     expect(res.body.title).toBe("learn testing");
     expect(res.body.completed).toBe(false);
+
+    console.log(res.statusCode);
+    console.log(res.body);
+
   });
 
   it("POST /todos should return 400 if title is missing", async () => {
