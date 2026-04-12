@@ -9,7 +9,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const ENV = process.env.NODE_ENV || "development";
 
-const dataDir = path.join(process.cwd(), "app", "data");
+const dataDir = path.join(__dirname, "data");
 
 
 if(!fs.existsSync(dataDir)) {
@@ -43,6 +43,8 @@ app.post("/todos", (req, res) => {
   if (!req.body.title) {
     return res.status(400).json({ error: "title is required" });
   }
+
+  try{
     const newTodo = {
       id: todos.length + 1,
       title: req.body.title,
@@ -53,6 +55,11 @@ app.post("/todos", (req, res) => {
     fs.writeFileSync(DATA_FILE, JSON.stringify(todos));
 
     res.status(201).json(newTodo);
+  } catch (err) {
+    console.error("POST ERROR:", err);
+    res.status(500).json({ error: err.message });
+    }
+
 });
 
 module.exports = app;
