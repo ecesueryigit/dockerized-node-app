@@ -42,17 +42,23 @@ app.post("/todos", (req, res) => {
   if (!req.body.title) {
     return res.status(400).json({ error: "title is required" });
   }
-  const newTodo = {
-    id: todos.length + 1,
-    title: req.body.title,
-    completed: false
+
+  try {
+    const newTodo = {
+      id: todos.length + 1,
+      title: req.body.title,
+      completed: false
+    };
+
+    todos.push(newTodo);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(todos));
+
+    res.status(201).json(newTodo);
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   };
 
-  todos.push(newTodo);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(todos));
-
-  res.status(201).json(newTodo);
-});
-
 module.exports = app;
-
+});
