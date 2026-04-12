@@ -9,10 +9,11 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const ENV = process.env.NODE_ENV || "development";
 
-const dataDir= path.join(__dirname, "data");
+const dataDir = path.join(process.cwd(), "app", "data");
+
 
 if(!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir);
+  fs.mkdirSync(dataDir, { recursive: true });
 }
 
 const DATA_FILE = path.join(dataDir, "todos.json");
