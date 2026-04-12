@@ -13,7 +13,7 @@ const dataDir = path.join(__dirname, "data");
 
 
 if(!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+  fs.mkdirSync(dataDir, { recursive: true, mode: 0o777  });
 }
 
 const DATA_FILE = path.join(dataDir, "todos.json");
