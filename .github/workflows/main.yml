@@ -21,20 +21,17 @@ jobs:
          run: |
           echo "ref: $GITHUB_REF"
           echo "ref_name: $GITHUB_REF_NAME"
-         
 
-       - name: Set up Node.js
+       - name: Set up Docker Buildx
+         uses: docker/setup-buildx-action@v3
+           
+       - name: Setup Node.js with cache
          uses: actions/setup-node@v3
          with:
-           node-version: '18'
+            node-version: 18
+            cache: 'npm'
+            cache-dependency-path: app/package-lock.json
 
-       - name: Cache npm
-         uses: actions/cache@v4
-         with:
-           path: app/node_modules
-           key:  ${{ runner.os }}-node-${{ hashFiles('app/package-lock.json') }}
-           restore_keys: |
-             ${{ runner.os }}-node-
 
        - name: Install dependencies
          run: npm ci
@@ -50,42 +47,17 @@ jobs:
            username: ${{ secrets.DOCKERHUB_USERNAME }}
            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-       - name: Extract version
-         id: vars
-         run:  echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-       
-
-       - name: Build Docker image (branch)
-         if: "!startsWith(github.ref, 'refs/tags/')"
-         run: |
-           docker build \
-             -t ecesueryigit/dockerized-node-app:latest \
-             -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
-             -t ecesueryigit/dockerized-node-app:${{ github.ref_name }} \
-             ./app
-
-       - name: Build Docker image (tag)
-         if: "startsWith(github.ref, 'refs/tags/')"
-         run: |
-            docker build \
-              -t ecesueryigit/dockerized-node-app:latest \
-              -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
-              -t ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }} \
-              ./app
-
-
-       - name: Push Docker images (branch)
-         if: "!startsWith(github.ref, 'refs/tags/')"
-         run: |
-           docker push ecesueryigit/dockerized-node-app:latest
-           docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
-           docker push ecesueryigit/dockerized-node-app:${{ github.ref_name }}
-           
-       - name: Push Docker images (tag)
-         if: "startsWith(github.ref, 'refs/tags/')"
-         run: |
-            docker push ecesueryigit/dockerized-node-app:latest
-            docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
-            docker push ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
-
-
+       - name: Build and Push Docker image
+         uses: docker/build-push-action@v5
+         with:
+            context: ./app
+            push: true
+            tags: |
+              ecesueryigit/dockerized-node-app:latest
+              ecesueryigit/dockerized-node-app:${{ github.sha }}
+              ecesueryigit/dockerized-node-app:${{ github.ref_name }}
+            cache-from: type=gha
+            cache-to: type=gha,mode=max
+        
+        
+        
