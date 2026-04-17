@@ -1,2 +1,4 @@
-root/node_modules
-app/.env
+node_modules/
+npm-debug.log*
+.env
+.env.*
