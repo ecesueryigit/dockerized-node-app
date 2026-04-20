@@ -4,7 +4,7 @@
   "description": "First DevOps project with Docker and Compose",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./server.js",
     "dev": "nodemon index.js",
     "test": "jest"
   },
