@@ -62,4 +62,8 @@ app.post("/todos", (req, res) => {
 
 });
 
+console.log("APP:", app);
+
 module.exports = app;
+
+
