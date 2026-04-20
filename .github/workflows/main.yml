@@ -47,17 +47,39 @@ jobs:
            username: ${{ secrets.DOCKERHUB_USERNAME }}
            password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-       - name: Build and Push Docker image
+       - name: Extract version
+         id: vars
+         if: startsWith(github.ref, 'refs/tags/')
+         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+         
+       - name: Build and Push Docker image (branch)
+         if: "!startsWith(github.ref, 'refs/tags/')"
          uses: docker/build-push-action@v5
          with:
             context: ./app
             push: true
+            platforms: linux/amd64
             tags: |
               ecesueryigit/dockerized-node-app:latest
               ecesueryigit/dockerized-node-app:${{ github.sha }}
               ecesueryigit/dockerized-node-app:${{ github.ref_name }}
             cache-from: type=gha
             cache-to: type=gha,mode=max
-        
-        
+
+       - name: Build and Push Docker image (tag)
+         if: "startsWith(github.ref, 'refs/tags/')"
+         uses: docker/build-push-action@v5
+         with:
+           context: ./app
+           push: true
+           platforms: linux/amd64
+           tags: |
+                ecesueryigit/dockerized-node-app:latest
+                ecesueryigit/dockerized-node-app:${{ github.sha }}
+                ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
+           cache-from: type=gha
+           cache-to: type=gha,mode=max
+            
+                  
+                
         
