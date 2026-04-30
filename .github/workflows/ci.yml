@@ -3,9 +3,8 @@ name: Node.js Docker CI/CD
 
 on: 
   push: 
-     branches:
-       - main
-       - dev
+     branches: [main, dev]
+
      tags:
        - 'v*'
   workflow_dispatch:
