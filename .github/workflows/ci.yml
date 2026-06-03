@@ -1,4 +1,4 @@
-
+      
 name: Node.js Docker CI/CD
 
 on: 
@@ -53,45 +53,73 @@ jobs:
          if: startsWith(github.ref, 'refs/tags/')
          run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
          
-       - name: Build and Push Dev image (dev)
+       - name: Build Dev image
          if: github.ref == 'refs/heads/dev'
-         uses: docker/build-push-action@v5
-         with:
-            context: ./app
-            push: true
-            platforms: linux/amd64
-            tags: |
-              ecesueryigit/dockerized-node-app:dev
-              ecesueryigit/dockerized-node-app:${{ github.sha }}
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
+         run: docker build \
+            -t ecesueryigit/dockerized-node-app:dev \
+            -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
+            ./app
+                
 
-       - name: Build and Push Prod image (main)
+       - name: Trivy scan (dev - non blocking)
+         if: github.ref == 'refs/heads/dev'
+         uses: aquasecurity/trivy-action@0.24.0
+         with:
+            image-ref: ecesueryigit/dockerized-node-app:${{ github.sha }}
+            format: table
+            severity: CRITICAL,HIGH
+            exit-code: 0
+
+       - name: Push Dev image
+         if: github.ref == 'refs/heads/dev'
+         run: |
+          docker push ecesueryigit/dockerized-node-app:dev
+          docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
+
+       - name: Build Prod image
          if: github.ref == 'refs/heads/main'
-         uses: docker/build-push-action@v5
-         with:
-           context: ./app
-           push: true
-           platforms: linux/amd64
-           tags: |
-                ecesueryigit/dockerized-node-app:latest
-                ecesueryigit/dockerized-node-app:main
-                ecesueryigit/dockerized-node-app:${{ github.sha }}
-           cache-from: type=gha
-           cache-to: type=gha,mode=max
+         run:  docker build \
+            -t ecesueryigit/dockerized-node-app:main \
+            -t ecesueryigit/dockerized-node-app:latest \
+            -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
+            ./app
+           
 
-       - name: Build and Push Release image 
-         if: "startsWith(github.ref, 'refs/tags/')"
-         uses: docker/build-push-action@v5
+       - name: Trivy scan (prod - blocking)
+         if: github.ref == 'refs/heads/main'
+         uses: aquasecurity/trivy-action@0.24.0
          with:
-           context: ./app
-           push: true
-           platforms: linux/amd64
-           tags: |
-                ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
-           cache-from: type=gha
-           cache-to: type=gha,mode=max
-            
+          image-ref: ecesueryigit/dockerized-node-app:${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+       - name: Push Prod image
+         if: github.ref == 'refs/heads/main'
+         run: |
+            docker push ecesueryigit/dockerized-node-app:latest
+            docker push ecesueryigit/dockerized-node-app:main
+            docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
+
+       - name: Build Release image
+         if: startsWith(github.ref, 'refs/tags/')
+         run: |
+            docker build -t ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }} ./app
+
+       - name: Trivy scan (release - blocking)
+         if: startsWith(github.ref, 'refs/tags/')
+         uses: aquasecurity/trivy-action@0.24.0
+         with:
+          image-ref: ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+       - name: Push Release image
+         if: startsWith(github.ref, 'refs/tags/')
+         run: |
+            docker push ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
+                    
                   
                 
         
