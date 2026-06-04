@@ -55,10 +55,11 @@ jobs:
          
        - name: Build Dev image
          if: github.ref == 'refs/heads/dev'
-         run: docker build \
-            -t ecesueryigit/dockerized-node-app:dev \
-            -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
-            ./app
+         run: |
+           docker build \
+             -t ecesueryigit/dockerized-node-app:dev \
+             -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
+             ./app
                 
 
        - name: Trivy scan (dev - non blocking)
@@ -73,7 +74,7 @@ jobs:
        - name: Push Dev image
          if: github.ref == 'refs/heads/dev'
          run: |
-          docker push ecesueryigit/dockerized-node-app:dev
+          docker push ecesueryigit/dockerized-node-app:dev 
           docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
 
        - name: Build Prod image
@@ -98,8 +99,8 @@ jobs:
        - name: Push Prod image
          if: github.ref == 'refs/heads/main'
          run: |
-            docker push ecesueryigit/dockerized-node-app:latest
-            docker push ecesueryigit/dockerized-node-app:main
+            docker push ecesueryigit/dockerized-node-app:latest 
+            docker push ecesueryigit/dockerized-node-app:main 
             docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
 
        - name: Build Release image
