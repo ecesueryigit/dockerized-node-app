@@ -78,11 +78,12 @@ jobs:
 
        - name: Build Prod image
          if: github.ref == 'refs/heads/main'
-         run:  docker build \
-            -t ecesueryigit/dockerized-node-app:main \
-            -t ecesueryigit/dockerized-node-app:latest \
-            -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
-            ./app
+         run: |
+           docker build \
+             -t ecesueryigit/dockerized-node-app:main \
+             -t ecesueryigit/dockerized-node-app:latest \
+             -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
+             ./app
            
 
        - name: Trivy scan (prod - blocking)
