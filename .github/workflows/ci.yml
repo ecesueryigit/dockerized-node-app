@@ -1,9 +1,10 @@
-
+      
 name: Node.js Docker CI/CD
 
 on: 
   push: 
-     branches: [main] 
+     branches: [main, dev]
+
      tags:
        - 'v*'
   workflow_dispatch:
@@ -52,34 +53,75 @@ jobs:
          if: startsWith(github.ref, 'refs/tags/')
          run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
          
-       - name: Build and Push Docker image (branch)
-         if: "!startsWith(github.ref, 'refs/tags/')"
-         uses: docker/build-push-action@v5
-         with:
-            context: ./app
-            push: true
-            platforms: linux/amd64
-            tags: |
-              ecesueryigit/dockerized-node-app:latest
-              ecesueryigit/dockerized-node-app:${{ github.sha }}
-              ecesueryigit/dockerized-node-app:${{ github.ref_name }}
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
+       - name: Build Dev image
+         if: github.ref == 'refs/heads/dev'
+         run: |
+           docker build \
+             -t ecesueryigit/dockerized-node-app:dev \
+             -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
+             ./app
+                
 
-       - name: Build and Push Docker image (tag)
-         if: "startsWith(github.ref, 'refs/tags/')"
-         uses: docker/build-push-action@v5
+       - name: Trivy scan (dev - non blocking)
+         if: github.ref == 'refs/heads/dev'
+         uses: aquasecurity/trivy-action@v0.36.0
          with:
-           context: ./app
-           push: true
-           platforms: linux/amd64
-           tags: |
-                ecesueryigit/dockerized-node-app:latest
-                ecesueryigit/dockerized-node-app:${{ github.sha }}
-                ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
-           cache-from: type=gha
-           cache-to: type=gha,mode=max
-            
+            image-ref: ecesueryigit/dockerized-node-app:${{ github.sha }}
+            format: table
+            severity: CRITICAL,HIGH
+            exit-code: 0
+
+       - name: Push Dev image
+         if: github.ref == 'refs/heads/dev'
+         run: |
+          docker push ecesueryigit/dockerized-node-app:dev 
+          docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
+
+       - name: Build Prod image
+         if: github.ref == 'refs/heads/main'
+         run: |
+           docker build \
+             -t ecesueryigit/dockerized-node-app:main \
+             -t ecesueryigit/dockerized-node-app:latest \
+             -t ecesueryigit/dockerized-node-app:${{ github.sha }} \
+             ./app
+           
+
+       - name: Trivy scan (prod - blocking)
+         if: github.ref == 'refs/heads/main'
+         uses: aquasecurity/trivy-action@v0.36.0
+         with:
+          image-ref: ecesueryigit/dockerized-node-app:${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+       - name: Push Prod image
+         if: github.ref == 'refs/heads/main'
+         run: |
+            docker push ecesueryigit/dockerized-node-app:latest 
+            docker push ecesueryigit/dockerized-node-app:main 
+            docker push ecesueryigit/dockerized-node-app:${{ github.sha }}
+
+       - name: Build Release image
+         if: startsWith(github.ref, 'refs/tags/')
+         run: |
+            docker build -t ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }} ./app
+
+       - name: Trivy scan (release - blocking)
+         if: startsWith(github.ref, 'refs/tags/')
+         uses: aquasecurity/trivy-action@v0.36.0
+         with:
+          image-ref: ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+       - name: Push Release image
+         if: startsWith(github.ref, 'refs/tags/')
+         run: |
+            docker push ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
+                    
                   
                 
         
