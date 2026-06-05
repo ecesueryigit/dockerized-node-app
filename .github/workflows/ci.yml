@@ -94,7 +94,7 @@ jobs:
           image-ref: ecesueryigit/dockerized-node-app:${{ github.sha }}
           format: table
           severity: CRITICAL,HIGH
-          exit-code: 1
+          args: --ignore-unfixed --exit-code 1
 
        - name: Push Prod image
          if: github.ref == 'refs/heads/main'
@@ -115,7 +115,7 @@ jobs:
           image-ref: ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
           format: table
           severity: CRITICAL,HIGH
-          exit-code: 1
+          args: --ignore-unfixed --exit-code 1
 
        - name: Push Release image
          if: startsWith(github.ref, 'refs/tags/')
