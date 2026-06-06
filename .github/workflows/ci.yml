@@ -35,6 +35,10 @@ jobs:
          run: npm ci
          working-directory: ./app
 
+       - name: Lint (fail test)
+         run: npm run lint
+         working-directory: ./app
+
        - name: Run test
          run: npm test
          working-directory: ./app
