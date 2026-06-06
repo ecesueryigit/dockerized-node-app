@@ -34,6 +34,10 @@ jobs:
        - name: Install dependencies
          run: npm ci
          working-directory: ./app
+         
+       - name: Check node_modules
+         run: ls node_modules/.bin
+         working-directory: ./app
 
        - name: Lint (fail test)
          run: npm run lint
