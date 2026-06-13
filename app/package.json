@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app/server.js",
     "dev": "nodemon app/index.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
 
   },
   "keywords": [],
