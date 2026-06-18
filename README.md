@@ -1,142 +1,123 @@
-# First DevOps Project – Node.js with Docker & Docker Compose
+--First DevOps Project – Node.js CI/CD with Docker
 
-Bu repo, **DevOps öğrenme sürecimde oluşturduğum ilk mini projedir**.
-Amaç; bir Node.js uygulamasını *doğru şekilde* containerize etmek, environment yönetimini koddan ayırmak ve Docker Compose ile servis yönetimini kavramaktır.
+This project demonstrates a complete DevOps workflow including:
 
-> Bu proje "büyük" bir uygulama olmayı değil, **temel DevOps prensiplerini doğru uygulamayı** hedefler.
+* Containerization with Docker
+* Multi-environment Docker image builds (dev / prod / release)
+* CI/CD pipeline using GitHub Actions
+* Automated testing, linting, and security scanning (Trivy)
+* Docker image versioning and Docker Hub deployment
 
----
+The goal of this project is not complexity, but to simulate a real-world DevOps pipeline from code → test → build → security scan → publish.
 
-## Proje Özeti
+--Project Architecture
 
-* Basit bir **Node.js (Express)** uygulaması
-* **Dockerfile** ile container haline getirilmiştir
-* **Docker Compose** ile servis ayağa kaldırılır
-* **.env** dosyası ile environment değişkenleri yönetilir
-* Kod içinde environment farkları (`development`, `production`) desteklenir
+Developer
+   |
+   v
+GitHub (dev / main / tags)
+   |
+   v
+GitHub Actions CI/CD Pipeline
+   |
+   +----------------------+
+   |                      |
+   v                      v
+Test Stage           Build Stage
+   |                      |
+   v                      v
+Lint + Unit Tests   Docker Image Build
+   |
+   v
+Security Scan (Trivy)
+   |
+   v
+Docker Hub Push
+   |
+   v
+Deployment-ready Image
+Application Stack
+Node.js (Express)
+Docker
+Docker Compose
+GitHub Actions
+Trivy (Security Scanner)
+CI/CD Pipeline Overview
 
----
+The workflow runs on:
 
-## Kullanılan Teknolojiler
+push to dev branch → development image
+push to main branch → production image
+git tag v* → release image
+pull request → test pipeline only
 
-* Node.js
-* Express.js
-* Docker
-* Docker Compose
-* Environment Variables (.env)
+--Pipeline Stages
 
----
+1. Test Stage
+- Checkout repository
+- Install dependencies (npm ci)
+- Run ESLint
+- Run unit tests (Jest)
+- 
+2. Build Stage
+- Build Docker image based on branch:
+dev → dev image
+main → production image
+tag → versioned release image
 
-## Proje Yapısı
+Tagging strategy:
+dev
+main
+latest
+commit SHA
+version tag
 
-```
-app/
- ├─ index.js
- ├─ package.json
- ├─ Dockerfile
- ├─ .env
- └─ node_modules/
+3. Security Stage (Trivy)
+- Scans Docker images for vulnerabilities
+- Dev branch → non-blocking scan
+- Main and release → blocking scan (fail on HIGH/CRITICAL issues)
 
-docker-compose.yml
-README.md
-```
+4. Push Stage
 
----
+Images are pushed to Docker Hub:
 
-## Environment Değişkenleri
+ecesueryigit/dockerized-node-app
+Docker Image Strategy
+Branch	Tag Strategy
+dev	(dev + SHA)
+main	(latest + main + SHA)
+tags	versioned release
 
-`.env` dosyası örneği:
+--How to Run Locally
 
-```
+*Development
+docker compose -f docker-compose.dev.yml up --build
+
+*Production
+docker compose -f docker-compose.prod.yml up --build
+
+
+--Environment Variables
+
+Example .env:
+
 PORT=3000
 NODE_ENV=development
-```
 
-Uygulama içinde şu şekilde kullanılır:
+--
+Endpoints
+/ → Hello message
+/health → health check
+/todos → simple file-based TODO API
 
-* `process.env.PORT`
-* `process.env.NODE_ENV`
+--Key DevOps Concepts Demonstrated
 
-Bu sayede:
+* CI/CD automation (GitHub Actions)
+* Branch-based deployment strategy
+* Docker image versioning
+* Security scanning in pipeline
+* Environment separation (dev / prod)
+* Containerized Node.js application
 
-* Kod **sabit değerlere bağlı kalmaz**
-* Farklı ortamlarda (dev / prod) aynı image kullanılabilir
-
----
-
-## Docker Kullanımı
-
-### Dockerfile
-
-Uygulama, resmi Node.js image’ı kullanılarak container haline getirilmiştir.
-
-* Bağımlılıklar yüklenir
-* Kod kopyalanır
-* Uygulama `node index.js` ile başlatılır
-
----
-
-### Docker Compose
-
-Docker Compose sayesinde:
-
-* Port mapping yönetilir
-* `.env` dosyası container içine aktarılır
-* Tek komutla servis ayağa kaldırılır
-
-Çalıştırmak için:
-
-```
-docker-compose up --build
-```
-
----
-
-## Uygulamayı Çalıştırma
-
-Container çalıştıktan sonra tarayıcıdan:
-
-```
-http://localhost:3000
-```
-
-çıktı:
-
-```
-Hello DevOps from development environment
-```
-
----
-
-## Bu Projenin Amacı
-
-Bu proje özellikle şunları öğrenmek için yapılmıştır:
-
-* Dockerfile ve Docker Compose farkını anlamak
-* `docker build` vs `docker-compose up` mantığını kavramak
-* Environment değişkenlerini **koddan ayırmak**
-* Basit ama gerçekçi bir DevOps workflow görmek
-
----
-
-## Not
-
-Bu proje bir **öğrenme projesidir**.
-İlerleyen aşamalarda:
-
-* Nginx eklenmesi
-* Logging
-* CI/CD pipeline
-* Cloud deployment
-
-gibi adımlarla geliştirilecektir.
-
----
-
-## Author
-
+--Author
 Ecesu Eryiğit
-
----
-
-Öğrenme sürecimde attığım bu ilk adımı inceleyen herkese teşekkürler.
