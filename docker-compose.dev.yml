@@ -1,24 +1,22 @@
-version: "3.9"
-
 services:
 
   node-app:
     container_name: devops-node-app
 
     build:
-      context: ./app
+        context: ./app
 
     ports:
-      - "3000:3000"
+        - "3000:3000"
 
     volumes:
-      - ./app:/app
-      - /app/node_modules
-      - ./data:/app/data
+        - ./app:/app
+        - /app/node_modules
+        - ./data:/app/data
 
     env_file:
-      - .env 
-    
+        - .env 
+      
     command: npm run dev
 
-    
+      
