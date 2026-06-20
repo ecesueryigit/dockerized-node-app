@@ -12,11 +12,31 @@ services:
     volumes:
         - ./app:/app
         - /app/node_modules
-        - ./data:/app/data
+        
 
     env_file:
         - .env 
       
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/todosdb
+
+    depends_on:
+      - mongo
+
     command: npm run dev
+
+  mongo:
+    image: mongo:7
+    container_name: mongo-db
+    restart: always
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
 
       
