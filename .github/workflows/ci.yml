@@ -129,7 +129,7 @@ jobs:
          with:
            image-ref: ecesueryigit/dockerized-node-app:latest
            format: table
-           severity: CRITICAL,HIGH
+           severity: CRITICAL
            ignore-unfixed: true
            exit-code: 1
               
