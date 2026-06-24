@@ -8,14 +8,14 @@
     "dev": "nodemon index.js",
     "test": "jest",
     "lint": "eslint ."
-
   },
   "keywords": [],
   "author": "Ecesu Eryiğit",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^17.2.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongoose": "^8.24.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
