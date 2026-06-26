@@ -17,6 +17,9 @@ services:
     env_file:
         - .env 
 
+    environment:
+        - MONGO_URL=mongodb://mongo:27017/todos
+        
     depends_on:
       - mongo
 
