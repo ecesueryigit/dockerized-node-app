@@ -114,6 +114,23 @@ jobs:
          run: |
             docker build -t ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }} ./app
 
+
+       - name: Start services
+         run: docker compose up -d
+
+
+       - name: API health check
+         run: |
+           sleep 10
+           curl --fail http://localhost/health
+           
+
+       - name: Stop services
+         if: always()
+         run: docker compose down
+
+
+
        - name: Trivy scan (dev - non blocking)
          if: github.ref == 'refs/heads/dev'
          uses: aquasecurity/trivy-action@v0.36.0
