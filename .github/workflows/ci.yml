@@ -50,7 +50,7 @@ jobs:
          working-directory: ./app
 
        - name: Start services
-         run: docker compose up -d
+         run: docker compose -f docker-compose.dev.yml up -d
 
        - name: Wait for Mongo
          run: sleep 10
@@ -61,7 +61,7 @@ jobs:
 
        - name: Stop services
          if: always()
-         run: docker compose down
+         run: docker compose -f docker-compose.dev.yml down
                 
          
   # ============================
@@ -126,7 +126,7 @@ jobs:
 
 
        - name: Start services
-         run: docker compose up -d
+         run: docker compose -f docker-compose.dev.yml up -d
 
 
        - name: API health check
@@ -137,7 +137,7 @@ jobs:
 
        - name: Stop services
          if: always()
-         run: docker compose down
+         run: docker compose -f docker-compose.dev.yml down
 
 
 
