@@ -51,6 +51,8 @@ jobs:
 
        - name: Start services
          run: docker compose -f docker-compose.dev.yml up -d
+         env:
+           MONGO_URL: mongodb://mongo:27017/todosdb
 
        - name: Wait for Mongo
          run: sleep 10
@@ -127,6 +129,8 @@ jobs:
 
        - name: Start services
          run: docker compose -f docker-compose.dev.yml up -d
+         env:
+           MONGO_URL: mongodb://mongo:27017/todosdb
 
 
        - name: API health check
