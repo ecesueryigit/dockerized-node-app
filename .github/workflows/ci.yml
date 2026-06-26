@@ -49,10 +49,20 @@ jobs:
          run: npm run lint
          working-directory: ./app
 
+       - name: Start services
+         run: docker compose up -d
+
+       - name: Wait for Mongo
+         run: sleep 10
+
        - name: Run test
          run: npm test
          working-directory: ./app
-         
+
+       - name: Stop services
+         if: always()
+         run: docker compose down
+                
          
   # ============================
   # 2. BUILD + SECURITY + PUSH STAGE
