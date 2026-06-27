@@ -58,13 +58,13 @@ jobs:
        - name: Check env file
          run: cat .env
 
-       - name: Check container env
-         run: docker exec devops-node-app env | grep MONGO
-
        - name: Start services
          run: docker compose -f docker-compose.dev.yml up -d
          env:
            MONGO_URL: mongodb://mongo:27017/todosdb
+
+       - name: Check container env
+         run: docker exec devops-node-app env | grep MONGO
 
        - name: Wait for Mongo
          run: sleep 10
@@ -81,7 +81,7 @@ jobs:
   # ============================
   # 2. BUILD + SECURITY + PUSH STAGE
   # ============================
-  
+
   build:
     needs: test
     runs-on: ubuntu-latest
