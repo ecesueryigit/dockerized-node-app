@@ -55,6 +55,11 @@ jobs:
            echo "PORT=3000" >> .env
            echo "NODE_ENV=development" >> .env
       
+       - name: Check env file
+         run: cat .env
+
+       - name: Check container env
+         run: docker exec devops-node-app env | grep MONGO
 
        - name: Start services
          run: docker compose -f docker-compose.dev.yml up -d
