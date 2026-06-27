@@ -49,6 +49,13 @@ jobs:
          run: npm run lint
          working-directory: ./app
 
+       - name: Create env file
+         run: |
+           echo "MONGO_URL=mongodb://mongo:27017/todosdb" > .env
+           echo "PORT=3000" >> .env
+           echo "NODE_ENV=development" >> .env
+           
+
        - name: Start services
          run: docker compose -f docker-compose.dev.yml up -d
          env:
