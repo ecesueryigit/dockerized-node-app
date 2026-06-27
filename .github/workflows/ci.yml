@@ -68,9 +68,9 @@ jobs:
        - name: Wait for Mongo
          run: sleep 10
 
-       - name: Run test
-         run: npm test
-         working-directory: ./app
+       - name: Run integration test
+         run: docker exec devops-node-app npm test
+         
 
        - name: Stop services
          if: always()
