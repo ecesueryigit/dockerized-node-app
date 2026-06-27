@@ -14,9 +14,6 @@
       env_file:
         - .env
 
-      environment:
-        - MONGO_URL= ${MONGO_URL}
-
       depends_on:
         - mongo
         
