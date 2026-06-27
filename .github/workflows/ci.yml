@@ -60,8 +60,7 @@ jobs:
 
        - name: Start services
          run: docker compose -f docker-compose.dev.yml up -d
-         env:
-           MONGO_URL: mongodb://mongo:27017/todosdb
+         
 
        - name: Check container env
          run: docker exec devops-node-app env | grep MONGO
