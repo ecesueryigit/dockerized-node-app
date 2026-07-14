@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 
 const ENV = process.env.NODE_ENV || "development";
-
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.send(`Hello DevOps from ${ENV} environment`);
@@ -73,7 +73,7 @@ app.delete("/todos/:id", async (req, res) => {
 app.listen(PORT, "0.0.0.0",() => {
 
   console.log(`Server running on ${PORT}`);
-  
+
 });
 module.exports = app;
 
