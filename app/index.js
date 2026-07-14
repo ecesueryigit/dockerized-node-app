@@ -49,9 +49,14 @@ app.post("/todos", async (req, res) => {
       completed: false
     });
 
-    
+    res.status(201).json({
+    id: newTodo._id.toString(),
+    title: newTodo.title,
+    completed: newTodo.completed,
+    createdAt: newTodo.createdAt,
+    updatedAt: newTodo.updatedAt
+  });
 
-    res.status(201).json(newTodo);
   } catch (err) {
     console.error("POST ERROR:", err);
     res.status(500).json({ error: err.message });
