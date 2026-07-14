@@ -9,6 +9,9 @@ export default [
       ecmaVersion: "latest",
       sourceType: "commonjs",
       globals: {
+        console: "readonly",
+        process: "readonly",
+        
         describe: "readonly",
         it: "readonly",
         test: "readonly",
