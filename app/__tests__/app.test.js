@@ -39,3 +39,9 @@ describe("API Tests", () => {
   expect(res.body.error).toBe("title is required");
   });
 });
+
+const mongoose = require("mongoose");
+
+afterAll(async () => {
+  await mongoose.connection.close();
+});
