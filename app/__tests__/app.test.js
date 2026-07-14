@@ -22,13 +22,13 @@ describe("API Tests", () => {
       .post("/todos")
       .send({ title: "learn testing" });
 
+    console.log(res.statusCode);
+    console.log(res.body);
+
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty("id");
     expect(res.body.title).toBe("learn testing");
     expect(res.body.completed).toBe(false);
-
-    console.log(res.statusCode);
-    console.log(res.body);
 
   });
 
