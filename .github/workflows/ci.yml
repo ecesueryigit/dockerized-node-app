@@ -153,7 +153,7 @@ jobs:
        - name: API health check
          run: |
            sleep 10
-           curl --fail http://localhost/health
+           curl --fail http://localhost:3000/health
            
 
        - name: Stop services
