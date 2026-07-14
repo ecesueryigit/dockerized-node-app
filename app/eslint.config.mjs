@@ -9,9 +9,12 @@ export default [
       ecmaVersion: "latest",
       sourceType: "commonjs",
       globals: {
-        process: "readonly",
-        console: "readonly",
-        __dirname: "readonly"
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly"
       }
     },
     rules: {
@@ -19,15 +22,4 @@ export default [
       "no-undef": "error"
     }
   },
-
-  {
-    files: ["__tests__/**/*.js"],
-    languageOptions: {
-      globals: {
-        describe: "readonly",
-        it: "readonly",
-        expect: "readonly"
-      }
-    }
-  }
 ];
