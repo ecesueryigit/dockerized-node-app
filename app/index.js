@@ -70,6 +70,11 @@ app.delete("/todos/:id", async (req, res) => {
   res.json({ message: "deleted" });
 });
 
+app.listen(PORT, "0.0.0.0",() => {
+
+  console.log(`Server running on ${PORT}`);
+  
+});
 module.exports = app;
 
 
