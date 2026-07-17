@@ -3,10 +3,7 @@
     node-app:
       container_name: devops-node-app-prod
 
-      build:
-        context: ./app
-        dockerfile: Dockerfile
-
+      image: ecesueryigit/dockerized-node-app:latest
 
       env_file:
         - .env
