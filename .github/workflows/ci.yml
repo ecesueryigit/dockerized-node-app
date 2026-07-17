@@ -217,9 +217,29 @@ jobs:
          run: |
                   docker push ecesueryigit/dockerized-node-app:${{ steps.vars.outputs.VERSION }}
 
-      
+  ###################
+  # 3. DEPLOY STAGE
+  ###################S    
 
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
 
+    steps:
+    
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+
+          script: |
+            cd ~/dockerized-node-app
+            git pull origin main
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
       
             
 
