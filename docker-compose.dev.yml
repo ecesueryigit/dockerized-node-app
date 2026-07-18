@@ -5,6 +5,7 @@ services:
 
     build:
         context: ./app
+        dockerfile: Dockerfile.dev
 
     ports:
         - "3000:3000"
