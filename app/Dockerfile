@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN apk update && apk upgrade
 RUN npm ci --omit=dev
 
 COPY . .
