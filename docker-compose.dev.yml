@@ -44,7 +44,18 @@ services:
     depends_on:
       - node-app
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-data:/var/lib/grafana
+
 volumes:
   mongo-data:
+  grafana-data:
 
       
