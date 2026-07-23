@@ -13,8 +13,12 @@ const Todo = require("./models/Todo");
 
 const express = require("express");
 
+const client = require("prom-client");
+
 const app = express();
 app.use(express.json());
+
+client.collectDefaultMetrics();
 
 const ENV = process.env.NODE_ENV || "development";
 const PORT = process.env.PORT || 3000;
@@ -25,6 +29,12 @@ app.get("/", (req, res) => {
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok", environment: ENV });
+});
+
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", client.register.contentType);
+
+  res.end(await client.register.metrics());
 });
 
 
