@@ -9,3 +9,13 @@ groups:
         annotations:
           summary: "Node.js application is down"
           description: "Prometheus cannot reach the node-app target."
+
+      - alert: NodeAppHighCPU
+        expr: |
+          rate(container_cpu_usage_seconds_total{container="devops-node-app"}[5m]) * 100 > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Node.js container CPU usage is high"
+          description: "The CPU usage of devops-node-app has been above 80% for 2 minutes."
