@@ -19,3 +19,13 @@ groups:
         annotations:
           summary: "Node.js container CPU usage is high"
           description: "The CPU usage of devops-node-app has been above 80% for 2 minutes."
+
+      - alert: NodeAppHighMemory
+        expr: |
+          container_memory_usage_bytes{container="devops-node-app"} / 1024 / 1024 > 500
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Node.js container memory usage is high"
+          description: "The memory usage of devops-node-app has been above 500 MB for 2 minutes."
