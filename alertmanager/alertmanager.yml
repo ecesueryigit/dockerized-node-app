@@ -1,15 +1,9 @@
 global:
   resolve_timeout: 5m
-  smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_from: '${SMTP_USER}'
-  smtp_auth_username: '${SMTP_USER}'
-  smtp_auth_password: '${SMTP_PASSWORD}'
 
 route:
-  receiver: 'email-notifications'
+  receiver: 'default'
 
 receivers:
-  - name: 'email-notifications'
-    email_configs:
-      - to: '${SMTP_TO}'
+  - name: 'default'
   

@@ -79,8 +79,6 @@ services:
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
-    env_file:
-    - .env
 
 volumes:
   mongo-data:
