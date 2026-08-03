@@ -8,11 +8,11 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-central-1"
+  region = var.aws_region
 }
 
 resource "aws_security_group" "terraform_test_sg" {
-  name        = "terraform-test-sg"
+  name        = var.security_group_name
   description = "Created by Terraform learning"
 
   ingress {
