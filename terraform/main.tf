@@ -13,7 +13,7 @@ provider "aws" {
 
 resource "aws_security_group" "terraform_test_sg" {
   name        = var.security_group_name
-  description = "Created by Terraform learning"
+  description = "Created by ${local.project_name} (${local.environment})"
 
   ingress {
     from_port   = 80
