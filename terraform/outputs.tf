@@ -11,3 +11,13 @@ output "security_group_name" {
 output "current_region" {
     value = data.aws_region.current.name
 }
+
+output "account_id" {
+    description = "AWS Account ID"
+    value = data.aws_caller_identity.current.account_id
+}
+
+output "caller_arn" {
+    description = "Current IAM ARN"
+    value = data.aws_caller_identity.current.arn
+}
