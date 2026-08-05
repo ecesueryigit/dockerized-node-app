@@ -21,3 +21,8 @@ output "caller_arn" {
     description = "Current IAM ARN"
     value = data.aws_caller_identity.current.arn
 }
+
+output "default_vpc_id" {
+    description = "Default VPC Id"
+    value = data.aws_vpc.default.id
+}
