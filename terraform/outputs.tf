@@ -26,3 +26,8 @@ output "default_vpc_id" {
     description = "Default VPC Id"
     value = data.aws_vpc.default.id
 }
+
+output "availability_zones" {
+    description = "Available AZs"
+    value = data.aws_availability_zones.available.names
+}
