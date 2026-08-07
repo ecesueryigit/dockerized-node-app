@@ -1,16 +1,16 @@
 resource "aws_instance" "existing_ec2" {
   ami           = "ami-0303e2e4a29f041a3"
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
 
-  key_name = "devops-ec2-key"
+  key_name = var.key_name
 
-  subnet_id = "subnet-057e3ccc2cea025f5"
+  subnet_id = var.subnet_id
 
   vpc_security_group_ids = [
-    "sg-04fdbe19547410b39"
+    var.security_group_id
   ]
 
   tags = {
-    Name = "dockerized-node-app"
+    Name = var.instance_name
   }
 }
