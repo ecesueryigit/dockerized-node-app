@@ -1,3 +1,3 @@
-data "aws_vpc" "existing" {
-    id = aws_instance.existing_ec2.vpc_id
+data "aws_subnet" "existing" {
+    id = var.subnet_id
 }

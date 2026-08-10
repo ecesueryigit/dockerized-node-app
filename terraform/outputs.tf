@@ -11,5 +11,5 @@ output "private_ip" {
 }
 
 output "vpc_id_from_data_source" {
-    value = data.aws_vpc.existing.id
+    value = data.aws_subnet.existing.vpc_id
 }
