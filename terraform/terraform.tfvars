@@ -1,6 +1,0 @@
-instance_type = "t3.micro"
-key_name = "devops-ec2-key"
-subnet_id = "subnet-057e3ccc2cea025f5"
-security_group_id = "sg-04fdbe19547410b39"
-instance_name = "dockerized-node-app"
-ssh_cidr = "176.233.30.102/32"
