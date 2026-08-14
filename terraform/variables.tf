@@ -21,3 +21,7 @@ variable "instance_name" {
 variable "ssh_cidr" {
     type = string
 }
+
+variable "aws_region" {
+    type = strings
+}
