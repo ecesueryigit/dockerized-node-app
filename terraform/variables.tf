@@ -23,5 +23,5 @@ variable "ssh_cidr" {
 }
 
 variable "aws_region" {
-    type = strings
+    type = string
 }
