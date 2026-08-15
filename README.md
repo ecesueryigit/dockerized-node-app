@@ -223,6 +223,7 @@ Gerçek değerler .env / GitHub Secrets üzerinden sağlanır.
 
 ## Project Structure
 
+```text
 dockerized-node-app/
 ├── app/
 │   ├── server.js
@@ -259,6 +260,7 @@ dockerized-node-app/
 ├── trivy.json
 ├── LICENSE
 └── README.md
+```
 
 ## Project Goal
 
