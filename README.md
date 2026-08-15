@@ -6,6 +6,7 @@ Node.js & Express ile geliştirilmiş bir REST API'nin build → test → securi
 
 Bu projede yalnızca uygulamayı Dockerize etmek yerine, uygulamanın geliştirme ve production süreçlerini tek bir CI/CD workflow içerisinde yönetmeye odaklandım.
 
+```text
 Temel akış:
 
 Code Push
@@ -27,6 +28,7 @@ AWS EC2 Deployment
 Prometheus / Grafana
     ↓
 CloudWatch
+```
 
 ## Tech Stack
 
